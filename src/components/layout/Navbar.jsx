@@ -1,15 +1,17 @@
 import { Link } from 'react-scroll';
 import { Menu, X, Headphones } from 'lucide-react';
 import { useState } from 'react';
+import ResumeModal from './ResumeModal';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isResumeOpen, setIsResumeOpen] = useState(false);
 
     const navLinks = [
         { name: 'ABOUT', to: 'about' },
         { name: 'SKILLS', to: 'skills' },
         { name: 'PROJECTS', to: 'projects' },
-        { name: 'ACHIEVEMENTS', to: 'achievements' },
+        { name: 'CODING_STATS', to: 'achievements' },
         { name: 'CONTACT', to: 'contact' },
     ];
 
@@ -31,7 +33,7 @@ const Navbar = () => {
                         offset={-100}
                         duration={500}
                         activeClass="text-primary border-b-2 border-primary pb-1"
-                        className="text-white hover:bg-primary-container hover:text-black transition-colors duration-100 cursor-pointer pb-1"
+                        className="text-white hover:bg-primary-container hover:text-black transition-all duration-150 cursor-pointer px-3 py-1"
                     >
                         {link.name}
                     </Link>
@@ -39,13 +41,12 @@ const Navbar = () => {
             </nav>
             
             <div className="hidden md:block">
-                <a 
-                    href="/resume.pdf" 
-                    download="My_Resume.pdf"
-                    className="inline-block px-4 py-1 border-2 border-primary text-primary hover:bg-primary hover:text-on-primary transition-all cursor-pointer"
+                <button 
+                    onClick={() => setIsResumeOpen(true)}
+                    className="inline-block px-4 py-1 border-2 border-primary text-primary hover:bg-primary hover:text-on-primary transition-all cursor-pointer font-bold"
                 >
-                    RESUME_PDF
-                </a>
+                    VIEW_PDF
+                </button>
             </div>
 
             {/* Mobile Menu Button */}
@@ -76,16 +77,25 @@ const Navbar = () => {
                                 {link.name}
                             </Link>
                         ))}
-                        <a 
-                            href="/resume.pdf" 
-                            download="My_Resume.pdf"
-                            className="block w-full text-left px-4 py-2 mt-2 border-2 border-primary text-primary hover:bg-primary hover:text-on-primary transition-all cursor-pointer"
-                        >
-                            RESUME_PDF
-                        </a>
+                        <div className="flex flex-col gap-3 mt-4">
+                            <button 
+                                onClick={() => {
+                                    setIsResumeOpen(true);
+                                    setIsOpen(false);
+                                }}
+                                className="block w-full text-center px-4 py-2 border-2 border-primary text-primary hover:bg-primary hover:text-on-primary transition-all cursor-pointer font-bold"
+                            >
+                                VIEW_PDF
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
+
+            <ResumeModal 
+                isOpen={isResumeOpen} 
+                onClose={() => setIsResumeOpen(false)} 
+            />
         </header>
     );
 };

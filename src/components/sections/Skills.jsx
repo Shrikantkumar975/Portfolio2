@@ -1,367 +1,261 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import SectionWrapper from '../layout/SectionWrapper';
-import { Radar } from 'react-chartjs-2';
-import {
-    Chart as ChartJS,
-    RadialLinearScale,
-    PointElement,
-    LineElement,
-    Filler,
-    Tooltip,
-    Legend
-} from 'chart.js';
 
-ChartJS.register(
-    RadialLinearScale,
-    PointElement,
-    LineElement,
-    Filler,
-    Tooltip,
-    Legend
-);
+const categories = [
+    {
+        id:    'LANG',
+        label: 'LANGUAGES',
+        color: '#f7df1e',
+        colorClass: 'text-yellow-300',
+        borderClass: 'border-yellow-300/40',
+        count: 5,
+        skills: [
+            { pid: '001', name: 'JavaScript', level: 92, status: 'RUNNING' },
+            { pid: '002', name: 'TypeScript', level: 80, status: 'RUNNING' },
+            { pid: '003', name: 'Java',       level: 75, status: 'ACTIVE'  },
+            { pid: '004', name: 'C++',        level: 70, status: 'ACTIVE'  },
+            { pid: '005', name: 'SQL',        level: 82, status: 'RUNNING' },
+        ]
+    },
+    {
+        id:    'FRONT',
+        label: 'FRONT-END',
+        color: '#61DAFB',
+        colorClass: 'text-blue-400',
+        borderClass: 'border-blue-400/40',
+        count: 3,
+        skills: [
+            { pid: '006', name: 'React.js',     level: 90, status: 'RUNNING' },
+            { pid: '007', name: 'Next.js',      level: 78, status: 'ACTIVE'  },
+            { pid: '008', name: 'Tailwind CSS', level: 88, status: 'RUNNING' },
+        ]
+    },
+    {
+        id:    'BACK',
+        label: 'BACK-END',
+        color: '#8eff71',
+        colorClass: 'text-primary',
+        borderClass: 'border-primary/40',
+        count: 4,
+        skills: [
+            { pid: '009', name: 'Node.js',    level: 87, status: 'RUNNING' },
+            { pid: '010', name: 'Express.js', level: 85, status: 'RUNNING' },
+            { pid: '011', name: 'REST APIs',  level: 90, status: 'RUNNING' },
+            { pid: '012', name: 'JWT Auth',   level: 82, status: 'ACTIVE'  },
+        ]
+    },
+    {
+        id:    'DB',
+        label: 'DATABASES',
+        color: '#4CAF50',
+        colorClass: 'text-green-400',
+        borderClass: 'border-green-400/40',
+        count: 4,
+        skills: [
+            { pid: '013', name: 'MongoDB',    level: 85, status: 'RUNNING' },
+            { pid: '014', name: 'MySQL',      level: 78, status: 'ACTIVE'  },
+            { pid: '015', name: 'PostgreSQL', level: 72, status: 'ACTIVE'  },
+            { pid: '016', name: 'Redis',      level: 68, status: 'IDLE'    },
+        ]
+    },
+    {
+        id:    'OPS',
+        label: 'DEVOPS & TOOLS',
+        color: '#FF9900',
+        colorClass: 'text-orange-400',
+        borderClass: 'border-orange-400/40',
+        count: 4,
+        skills: [
+            { pid: '017', name: 'Docker',      level: 75, status: 'ACTIVE'  },
+            { pid: '018', name: 'Git & GitHub', level: 90, status: 'RUNNING' },
+            { pid: '019', name: 'Linux',       level: 72, status: 'ACTIVE'  },
+            { pid: '020', name: 'AWS',         level: 65, status: 'IDLE'    },
+        ]
+    },
+];
+
+const statusStyle = {
+    RUNNING: { label: '● RUNNING', color: 'text-primary'  },
+    ACTIVE:  { label: '● ACTIVE',  color: 'text-blue-400' },
+    IDLE:    { label: '○ IDLE',    color: 'text-outline'  },
+};
 
 const Skills = () => {
-    const [activeDomain, setActiveDomain] = useState(null);
-    const [leetcodeStats, setLeetcodeStats] = useState(null);
-    const [leetcodeBadges, setLeetcodeBadges] = useState([]);
-    const [currentBadgeIndex, setCurrentBadgeIndex] = useState(0);
+    const [activeId, setActiveId] = useState(null);
 
-    useEffect(() => {
-        if (leetcodeBadges.length > 0) {
-            const interval = setInterval(() => {
-                setCurrentBadgeIndex(prev => (prev + 1) % leetcodeBadges.length);
-            }, 3000); // Swap every 3 seconds
-            return () => clearInterval(interval);
-        }
-    }, [leetcodeBadges]);
-    
-    // Replace with your exact LeetCode username
-    const leetcodeUsername = 'shrikumar975'; 
+    const totalProcesses = categories.reduce((sum, c) => sum + c.skills.length, 0);
+    const activeGroup = categories.find(c => c.id === activeId);
 
-    useEffect(() => {
-        const fetchLeetCodeData = async () => {
-            try {
-                // Fetching from a more reliable LeetCode open-source API
-                const [statsRes, profileRes, contestRes, badgesRes] = await Promise.all([
-                    fetch(`https://alfa-leetcode-api.onrender.com/${leetcodeUsername}/solved`),
-                    fetch(`https://alfa-leetcode-api.onrender.com/${leetcodeUsername}`),
-                    fetch(`https://alfa-leetcode-api.onrender.com/${leetcodeUsername}/contest`),
-                    fetch(`https://alfa-leetcode-api.onrender.com/${leetcodeUsername}/badges`)
-                ]);
-                
-                const statsData = await statsRes.json();
-                const profileData = await profileRes.json();
-                const contestData = await contestRes.json();
-                const badgesData = await badgesRes.json();
-
-                if (badgesData && badgesData.badges) {
-                    setLeetcodeBadges(badgesData.badges);
-                }
-
-                if (statsData && profileData && contestData) {
-                    setLeetcodeStats({
-                        totalSolved: statsData.solvedProblem,
-                        easySolved: statsData.easySolved,
-                        mediumSolved: statsData.mediumSolved,
-                        hardSolved: statsData.hardSolved,
-                        ranking: profileData.ranking,
-                        contestRating: Math.round(contestData.contestRating || 0)
-                    });
-                }
-            } catch (error) {
-                console.error("Failed to fetch LeetCode data", error);
-            }
-        };
-
-        fetchLeetCodeData();
-    }, [leetcodeUsername]);
-
-    const domainDetails = {
-        'FRONT-END': [
-            'React.js / Next.js',
-            'Tailwind CSS & Frontend UI',
-            'State Management (Redux/Context)',
-            'Responsive & Animated Web Design'
-        ],
-        'BACK-END': [
-            'Node.js & Express.js',
-            'RESTful API Development',
-            'Authentication (JWT)',
-            'Microservices Architecture'
-        ],
-        'DATABASE': [
-            'MongoDB / NoSQL Architectures',
-            'PostgreSQL / MySQL',
-            'Mongoose & Prisma ORM',
-            'Database Optimization'
-        ],
-        'DEPLOYMENT': [
-            'Docker Containerization',
-            'AWS & Cloud Infrastructure',
-            'Linux / Ubuntu Server Config',
-            'CI/CD Pipelines'
-        ],
-        'VERSION CONTROL': [
-            'Git & GitHub Workflows',
-            'Collaborative Development',
-            'Branching Strategies',
-            'Code Reviews & Issue Tracking'
-        ]
-    };
-
-    const techSkills = [
-        { name: 'FRONT-END', val: 90 },
-        { name: 'BACK-END', val: 85 },
-        { name: 'DATABASE', val: 80 },
-        { name: 'DEPLOYMENT', val: 75 },
-        { name: 'VERSION CONTROL', val: 85 }
-    ];
-
-    const radarData = {
-        labels: techSkills.map(t => t.name),
-        datasets: [
-            {
-                label: 'Proficiency',
-                data: techSkills.map(t => t.val),
-                backgroundColor: 'rgba(142, 255, 113, 0.2)', // primary color
-                borderColor: 'rgba(142, 255, 113, 1)',
-                borderWidth: 2,
-                pointBackgroundColor: 'rgba(142, 255, 113, 1)',
-                pointBorderColor: '#000',
-                pointHoverBackgroundColor: '#000',
-                pointHoverBorderColor: 'rgba(142, 255, 113, 1)',
-                pointRadius: 4,
-                pointHoverRadius: 6
-            }
-        ]
-    };
-
-    const radarOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        layout: {
-            padding: 30 // Adds breathing room inside the canvas so labels don't get cut off!
-        },
-        scales: {
-            r: {
-                angleLines: {
-                    color: 'rgba(142, 255, 113, 0.3)'
-                },
-                grid: {
-                    color: 'rgba(142, 255, 113, 0.3)'
-                },
-                pointLabels: {
-                    color: 'rgba(142, 255, 113, 1)',
-                    font: {
-                        family: "'Inter', sans-serif",
-                        size: 10,
-                        weight: 'bold'
-                    }
-                },
-                min: 0,
-                max: 100,
-                ticks: {
-                    display: false, // hide the numbers (0, 20, 40)
-                    stepSize: 20
-                }
-            }
-        },
-        plugins: {
-            legend: {
-                display: false
-            },
-            tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                titleColor: 'rgba(142, 255, 113, 1)',
-                bodyColor: '#fff',
-                borderColor: 'rgba(142, 255, 113, 1)',
-                borderWidth: 1,
-                callbacks: {
-                    label: function (context) {
-                        return `${context.raw}%`;
-                    }
-                }
-            }
-        }
-    };
     return (
-        <SectionWrapper id="skills" className="pt-24 pb-32">
-            <div className="max-w-7xl mx-auto px-6">
-                {/* Header Section */}
-                <section className="mb-12 border-l-4 border-primary pl-4 md:pl-6">
-                    <h1 className="font-headline text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-on-background mb-2 leading-none uppercase tracking-tighter md:tracking-normal break-words">
-                        SYSTEM_CAPABILITIES
-                    </h1>
-                    <p className="font-label text-primary tracking-[0.2em] text-xs">
-                        [CORE_COMPETENCIES_MAPPING_v1.0]
+        <SectionWrapper id="skills">
+            <div>
+
+                {/* Header */}
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                    className="mb-10"
+                >
+                    <h2 className="font-headline text-4xl md:text-5xl font-black tracking-tighter uppercase mb-2">
+                        Skills <span className="text-primary">&</span> Tools
+                    </h2>
+                    <p className="text-on-surface-variant text-sm font-mono">
+                        // select a process group to inspect active modules
                     </p>
-                </section>
+                </motion.div>
 
-                {/* Bento Grid Layout */}
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-                    {/* Radar Chart Section */}
-                    <div className="md:col-span-8 bg-surface-container border-2 border-outline p-8 relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 p-2 font-label text-[10px] text-outline border-l border-b border-outline">
-                            CHART_ID: SIG_098
+                {/* Terminal window */}
+                <div className="border-2 border-outline bg-surface-container-lowest block-shadow-primary">
+
+                    {/* Title bar */}
+                    <div className="bg-surface-container-highest border-b-2 border-outline px-4 py-2 flex items-center justify-between">
+                        <div className="flex gap-2">
+                            <div className="w-3 h-3 bg-error" />
+                            <div className="w-3 h-3 bg-secondary" />
+                            <div className="w-3 h-3 bg-primary" />
                         </div>
-                        <h2 className="font-headline text-2xl font-black mb-8 flex items-center gap-3 uppercase">
-                            <span className="w-3 h-3 bg-primary block"></span>
-                            PROFICIENCY_RADAR
-                        </h2>
-
-                        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 w-full">
-                            {/* Dynamic Radar Chart Block */}
-                            <div className="relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[400px] aspect-square flex items-center justify-center shrink-0 mx-auto">
-                                <Radar data={radarData} options={radarOptions} />
-                            </div>
-
-                            {/* Tech List */}
-                            <div className="flex flex-col gap-4 w-full lg:w-48 shrink-0">
-                                {techSkills.map(tech => (
-                                    <div key={tech.name} className="border-b border-outline-variant pb-2">
-                                        <div className="flex justify-between items-end mb-1">
-                                            <span className="font-label text-xs">{tech.name}</span>
-                                            <span className="font-headline text-primary text-xl font-bold">{tech.val}%</span>
-                                        </div>
-                                        <div className="w-full h-1 bg-surface-variant">
-                                            <div className="h-full bg-primary" style={{ width: `${tech.val}%` }}></div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+                        <span className="font-mono text-[10px] text-outline tracking-widest">
+                            PROCESS_MANAGER — GROUPS: {categories.length} — TOTAL: {totalProcesses}
+                        </span>
+                        <span className="font-mono text-[10px] text-primary animate-pulse">● LIVE</span>
                     </div>
 
-                    {/* Achievement Highlight */}
-                    <div className="md:col-span-4 flex flex-col gap-6">
-                        {/* LeetCode Card */}
-                        <div className="flex-1 bg-surface-container-high border-2 border-outline p-6 flex flex-col justify-center items-center text-center relative overflow-hidden group">
-                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent h-[200%] animate-[scanline_3s_linear_infinite] pointer-events-none"></div>
-                            <div className="font-headline text-6xl font-black text-on-surface mb-2 tracking-tighter mt-4">
-                                {leetcodeStats ? leetcodeStats.contestRating : '...'}
-                            </div>
-                            <div className="font-label text-primary tracking-widest text-sm mb-4">CONTEST_RATING</div>
-                            <div className="bg-black/50 border border-outline px-3 py-1 font-label text-[10px] text-outline mb-6">
-                                {leetcodeStats ? `GLOBAL RANK: ${leetcodeStats.ranking}` : 'FETCHING_DATA...'}
-                            </div>
-                            
-                            <div className="w-full grid grid-cols-3 gap-2">
-                                <div className="bg-surface-container p-2 border border-outline-variant">
-                                    <div className="text-[10px] text-outline mb-1">EASY</div>
-                                    <div className="font-headline text-primary">
-                                        {leetcodeStats ? leetcodeStats.easySolved : '...'}
-                                    </div>
-                                </div>
-                                <div className="bg-surface-container p-2 border border-outline-variant">
-                                    <div className="text-[10px] text-outline mb-1">MEDIUM</div>
-                                    <div className="font-headline text-secondary">
-                                        {leetcodeStats ? leetcodeStats.mediumSolved : '...'}
-                                    </div>
-                                </div>
-                                <div className="bg-surface-container p-2 border border-outline-variant">
-                                    <div className="text-[10px] text-outline mb-1">HARD</div>
-                                    <div className="font-headline text-error">
-                                        {leetcodeStats ? leetcodeStats.hardSolved : '...'}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Badges Carousel */}
-                        <div className="bg-surface-container-highest border-2 border-primary p-6 relative flex flex-col justify-center items-center overflow-hidden min-h-[160px]">
-                            <div className="absolute top-2 left-2 font-label text-[10px] text-primary">[ACHIEVEMENT_VAULT]</div>
-                            
-                            {leetcodeBadges.length > 0 ? (
-                                <div className="flex flex-col items-center animate-pulse transition-opacity duration-500" key={currentBadgeIndex}>
-                                    <img 
-                                        src={leetcodeBadges[currentBadgeIndex].icon.startsWith('http') 
-                                            ? leetcodeBadges[currentBadgeIndex].icon 
-                                            : `https://leetcode.com${leetcodeBadges[currentBadgeIndex].icon}`} 
-                                        alt="Badge" 
-                                        className="w-16 h-16 drop-shadow-[0_0_8px_rgba(142,255,113,0.5)] mb-3"
+                    {/* Category group buttons */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 border-b-2 border-outline">
+                        {categories.map((cat, i) => (
+                            <motion.button
+                                key={cat.id}
+                                initial={{ opacity: 0, y: -10 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.3, delay: i * 0.07 }}
+                                onMouseEnter={() => setActiveId(cat.id)}
+                                onClick={() => setActiveId(activeId === cat.id ? null : cat.id)}
+                                className={`relative p-4 text-left border-r border-outline last:border-r-0 transition-all duration-200 group cursor-pointer
+                                    ${activeId === cat.id
+                                        ? 'bg-surface-container-highest'
+                                        : 'hover:bg-surface-container'
+                                    }`}
+                            >
+                                {/* Active indicator bar */}
+                                {activeId === cat.id && (
+                                    <motion.div
+                                        layoutId="activebar"
+                                        className="absolute top-0 left-0 right-0 h-[2px]"
+                                        style={{ backgroundColor: cat.color }}
                                     />
-                                    <h3 className="font-headline text-sm mb-1 font-black uppercase text-center text-on-surface">
-                                        {leetcodeBadges[currentBadgeIndex].displayName}
-                                    </h3>
-                                    <p className="font-label text-[10px] text-primary">
-                                        ACQUIRED: {leetcodeBadges[currentBadgeIndex].creationDate || 'N/A'}
-                                    </p>
-                                </div>
-                            ) : (
-                                <div className="text-outline-variant font-mono text-xs uppercase animate-pulse">
-                                    Loading Badges...
-                                </div>
-                            )}
+                                )}
 
-                            {/* Carousel Indicators (Max 10 displayed to prevent overflow) */}
-                            {leetcodeBadges.length > 0 && (
-                                <div className="absolute bottom-3 flex gap-1 items-center justify-center w-full">
-                                    {leetcodeBadges.slice(0, Math.min(10, leetcodeBadges.length)).map((_, idx) => (
-                                        <div 
-                                            key={idx} 
-                                            className={`h-1 transition-all ${idx === (currentBadgeIndex % 10) ? 'w-4 bg-primary' : 'w-1 bg-outline-variant'}`}
-                                        ></div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
+                                <p className={`font-label text-[9px] tracking-[0.2em] mb-2 ${cat.colorClass}`}>
+                                    [{cat.label}]
+                                </p>
+                                <p className="font-headline font-black text-xl text-white">
+                                    {String(cat.count).padStart(2, '0')}
+                                </p>
+                                <p className="font-mono text-[10px] text-outline mt-1">
+                                    processes
+                                </p>
+
+                                {/* Active arrow */}
+                                {activeId === cat.id && (
+                                    <span className={`absolute bottom-2 right-3 font-mono text-[10px] ${cat.colorClass}`}>▼</span>
+                                )}
+                            </motion.button>
+                        ))}
                     </div>
 
-                    {/* Interactive Domain Details Panel */}
-                    <div className="md:col-span-12 bg-black border-2 border-outline overflow-hidden mt-6">
-                        <div className="p-4 border-b border-outline flex justify-between items-center bg-surface-container-low">
-                            <span className="font-label text-xs tracking-widest uppercase">TECH_STACK_BREAKDOWN</span>
-                            <div className="flex gap-4">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-2 h-2 bg-primary animate-pulse"></div>
-                                    <span className="font-label text-[10px]">AWAITING_INPUT</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 border-b border-outline">
-                            {Object.keys(domainDetails).map((domain) => (
-                                <button
-                                    key={domain}
-                                    onMouseEnter={() => setActiveDomain(domain)}
-                                    onFocus={() => setActiveDomain(domain)}
-                                    onClick={() => setActiveDomain(domain)}
-                                    className={`p-4 font-headline flex-1 font-bold text-xs md:text-sm uppercase transition-all text-left sm:text-center border-b md:border-b-0 md:border-r border-outline last:border-r-0 hover:bg-surface-container ${activeDomain === domain ? 'bg-primary text-black hover:text-white' : 'text-on-surface'}`}
+                    {/* Expandable process list */}
+                    <AnimatePresence mode="wait">
+                        {activeGroup ? (
+                            <motion.div
+                                key={activeGroup.id}
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.25, ease: 'easeInOut' }}
+                                className="overflow-hidden"
+                            >
+                                {/* Column headers */}
+                                <div
+                                    className="grid px-4 py-2 border-b border-outline bg-surface-container text-outline font-label text-[10px] tracking-widest uppercase"
+                                    style={{ gridTemplateColumns: '3rem 1fr 10rem 4rem 6rem' }}
                                 >
-                                    {domain}
-                                </button>
-                            ))}
-                        </div>
+                                    <span>PID</span>
+                                    <span>PROCESS_NAME</span>
+                                    <span>CPU_USAGE</span>
+                                    <span className="text-right">LEVEL</span>
+                                    <span className="text-right">STATUS</span>
+                                </div>
 
-                        {/* Details Panel */}
-                        <div className="p-6 md:p-8 min-h-[180px] bg-surface-container-lowest flex items-center">
-                            {activeDomain ? (
-                                <div className="w-full">
-                                    <h3 className="font-label text-primary text-sm mb-4 tracking-widest">[{activeDomain}_MODULES]</h3>
-                                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
-                                        {domainDetails[activeDomain].map((item, idx) => (
-                                            <li key={idx} className="flex items-center gap-3 text-on-surface-variant group">
-                                                <span className="text-secondary">&gt;</span>
-                                                <span className="font-mono text-sm group-hover:text-primary transition-colors cursor-default">{item}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            ) : (
-                                <div className="w-full text-center text-outline-variant font-mono text-xs uppercase animate-pulse">
-                                    Hover over a domain to decrypt skill data...
-                                </div>
-                            )}
-                        </div>
+                                {/* Skill rows */}
+                                {activeGroup.skills.map((skill, i) => {
+                                    const status = statusStyle[skill.status];
+                                    return (
+                                        <motion.div
+                                            key={skill.pid}
+                                            initial={{ opacity: 0, x: -16 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ duration: 0.25, delay: i * 0.06 }}
+                                            className="grid items-center gap-4 px-4 py-3 border-b border-outline-variant/30 hover:bg-white/[0.03] transition-colors group"
+                                            style={{ gridTemplateColumns: '3rem 1fr 10rem 4rem 6rem' }}
+                                        >
+                                            <span className="font-mono text-[11px] text-outline">{skill.pid}</span>
+
+                                            <span className="font-headline font-bold text-sm text-white group-hover:text-primary transition-colors">
+                                                {skill.name}
+                                            </span>
+
+                                            {/* Animated bar */}
+                                            <div className="h-[4px] bg-surface-container-highest rounded-full overflow-hidden">
+                                                <motion.div
+                                                    initial={{ width: 0 }}
+                                                    animate={{ width: `${skill.level}%` }}
+                                                    transition={{ duration: 0.7, delay: i * 0.06 + 0.1, ease: 'easeOut' }}
+                                                    className="h-full rounded-full"
+                                                    style={{ backgroundColor: activeGroup.color }}
+                                                />
+                                            </div>
+
+                                            <span
+                                                className="font-headline font-black text-base text-right"
+                                                style={{ color: activeGroup.color }}
+                                            >
+                                                {skill.level}%
+                                            </span>
+
+                                            <span className={`font-mono text-[10px] text-right ${status.color}`}>
+                                                {status.label}
+                                            </span>
+                                        </motion.div>
+                                    );
+                                })}
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="empty"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="px-4 py-10 text-center font-mono text-xs text-outline-variant uppercase animate-pulse"
+                            >
+                                ▶ click a process group to inspect modules...
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    {/* Footer */}
+                    <div className="px-4 py-2 border-t border-outline bg-surface-container-highest flex justify-between items-center text-[10px] font-mono text-outline uppercase">
+                        <span>
+                            {activeGroup
+                                ? `VIEWING: [${activeGroup.label}] — ${activeGroup.skills.length} PROCESSES`
+                                : 'NO GROUP SELECTED'}
+                        </span>
+                        <span className="text-primary">SYS_OK</span>
                     </div>
-                </div>
 
-                {/* Terminal Output Decorator */}
-                <div className="mt-12 bg-surface-container-lowest border border-outline p-4 font-mono text-[10px] text-outline-variant uppercase">
-                    <div>&gt; FETCHING SKILLS_DATA_STREAM... DONE</div>
-                    <div>&gt; ANALYZING LEETCODE_API_RESULT... 600+ PROBLEMS IDENTIFIED</div>
-                    <div>&gt; CALCULATING TECH_WEIGHT_RATIO... READY</div>
-                    <div className="text-primary animate-pulse">&gt; SYSTEM_READY_FOR_ENGAGEMENT_</div>
                 </div>
             </div>
         </SectionWrapper>

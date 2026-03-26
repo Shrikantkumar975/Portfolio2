@@ -23,7 +23,7 @@ const Hero = () => {
 
     return (
         <SectionWrapper id="home" className="pt-24 md:pt-32 pb-12">
-            <section className="px-6 md:px-12 py-12 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10 w-full max-w-7xl mx-auto">
+            <section className="py-12 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10 w-full">
                 <div className="lg:col-span-7 flex flex-col justify-center">
                     <div className="mb-4 inline-block px-3 py-1 bg-surface-container-highest border border-outline text-primary font-label text-xs tracking-[0.2em] w-max">
                         [STATUS: OPEN_TO_WORK]

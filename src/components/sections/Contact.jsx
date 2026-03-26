@@ -30,17 +30,21 @@ const Contact = () => {
     return (
         <SectionWrapper id="contact">
             <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: -20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
+                className="mb-12 border-l-4 border-primary pl-6"
             >
-                <h2 className="text-3xl md:text-4xl font-bold mb-12 flex items-center justify-center gap-2">
-                    <Mail className="w-8 h-8 text-primary" /> Get In Touch
+                <h2 className="font-headline text-4xl md:text-5xl font-black tracking-tighter uppercase mb-2">
+                    Get In <span className="text-primary">Touch</span>
                 </h2>
+                <p className="text-on-surface-variant text-sm font-mono tracking-widest uppercase">
+                    // communication_channel_active
+                </p>
             </motion.div>
 
-            <div className="flex flex-col lg:flex-row gap-12 max-w-6xl mx-auto w-full">
+            <div className="flex flex-col lg:flex-row gap-12 w-full">
                 {/* Contact Information */}
                 <div className="flex-1 space-y-8">
                     <motion.div
@@ -63,7 +67,7 @@ const Contact = () => {
                                 </div>
                                 <div>
                                     <p className="font-semibold text-foreground">Email</p>
-                                    <p>your.email@example.com</p>
+                                    <p>shrikumar975@gmail.com</p>
                                 </div>
                             </div>
 
@@ -73,7 +77,7 @@ const Contact = () => {
                                 </div>
                                 <div>
                                     <p className="font-semibold text-foreground">Phone</p>
-                                    <p>+91 9876543210</p>
+                                    <p>+91 9572225679</p>
                                 </div>
                             </div>
 
@@ -83,7 +87,7 @@ const Contact = () => {
                                 </div>
                                 <div>
                                     <p className="font-semibold text-foreground">Location</p>
-                                    <p>Your City, State</p>
+                                    <p>Patna, Bihar, India </p>
                                 </div>
                             </div>
                         </div>
@@ -164,7 +168,7 @@ const Contact = () => {
                                 <span className="animate-pulse">Sending...</span>
                             ) : (
                                 <>
-                                    Send Message <Send size={20} />
+                                    <span className="text-black">Send Message</span> <Send size={20} className="text-black" />
                                 </>
                             )}
                         </button>

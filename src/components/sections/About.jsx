@@ -1,104 +1,82 @@
 import { motion } from 'framer-motion';
-import { Server, Database, Code, Terminal, User } from 'lucide-react';
 import SectionWrapper from '../layout/SectionWrapper';
 
 const About = () => {
-    const highlights = [
-        {
-            icon: <Server className="w-6 h-6 text-primary" />,
-            title: "Backend Focus",
-            description: "Specializing in microservices, REST APIs, and scalable architectures."
-        },
-        {
-            icon: <Database className="w-6 h-6 text-purple-500" />,
-            title: "Performance",
-            description: "Optimizing queries, caching strategies, and reducing latency."
-        },
-        {
-            icon: <Code className="w-6 h-6 text-pink-500" />,
-            title: "Problem Solving",
-            description: "Strong DSA fundamentals with 700+ problems solved on LeetCode."
-        },
-        {
-            icon: <Terminal className="w-6 h-6 text-blue-500" />,
-            title: "Clean Code",
-            description: "Writing maintainable, testable, and well-documented software."
-        }
-    ];
-
     return (
-        <SectionWrapper id="about" className="bg-muted/30">
-            <div className="flex flex-col md:flex-row gap-12 items-center">
-                {/* Left text content */}
-                <div className="flex-1">
-                    <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5 }}
-                    >
-                        <h2 className="text-3xl md:text-4xl font-bold mb-6 flex items-center gap-2">
-                            <User className="w-8 h-8 text-primary" /> About Me
-                        </h2>
+        <SectionWrapper id="about">
+            {/* Header */}
+            <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="mb-12 border-l-4 border-primary pl-6"
+            >
+                <h2 className="font-headline text-4xl md:text-5xl font-black tracking-tighter uppercase mb-2">
+                    About <span className="text-primary">Me</span>
+                </h2>
+                <p className="text-on-surface-variant text-sm font-mono tracking-widest uppercase">
+                    // human_interface_profile_data
+                </p>
+            </motion.div>
 
-                        <div className="space-y-4 text-muted-foreground text-lg mb-8">
-                            <p>
-                                Hello! I'm Shrikant, a highly motivated B.Tech Computer Science student
-                                with a deep passion for backend development and software architecture.
-                            </p>
-                            <p>
-                                My journey in tech is driven by the thrill of solving complex problems and
-                                building systems that handle data efficiently at scale. I thrive in environments
-                                where performance and reliability are critical.
-                            </p>
-                            <p>
-                                Beyond coding, I'm constantly challenging myself with algorithmic problems,
-                                having built a strong foundation in Data Structures and Algorithms with a
-                                significant presence on platforms like LeetCode and HackerRank.
-                            </p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+                {/* Picture */}
+                <motion.div
+                    initial={{ opacity: 0, x: -30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                    className="flex justify-center"
+                >
+                    <div className="relative w-64 h-64 md:w-80 md:h-80">
+                        {/* Corner brackets */}
+                        <div className="absolute -top-2 -left-2 w-5 h-5 border-t-2 border-l-2 border-primary" />
+                        <div className="absolute -top-2 -right-2 w-5 h-5 border-t-2 border-r-2 border-primary" />
+                        <div className="absolute -bottom-2 -left-2 w-5 h-5 border-b-2 border-l-2 border-primary" />
+                        <div className="absolute -bottom-2 -right-2 w-5 h-5 border-b-2 border-r-2 border-primary" />
+
+                        <div className="w-full h-full border-2 border-outline overflow-hidden">
+                            <img
+                                src="/profile-pic.png"
+                                alt="Shrikant Kumar"
+                                className="w-full h-full object-cover"
+                            />
                         </div>
-                    </motion.div>
-                </div>
-
-                {/* Right card grid */}
-                <div className="flex-1 w-full">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {highlights.map((item, index) => (
-                            <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.5, delay: index * 0.1 }}
-                                className="bg-background border border-border rounded-xl p-6 hover:border-primary/50 hover:shadow-lg hover:-translate-y-1 transition-all group"
-                            >
-                                <div className="mb-4 p-3 bg-muted rounded-lg inline-block group-hover:bg-primary/10 transition-colors">
-                                    {item.icon}
-                                </div>
-                                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                                <p className="text-muted-foreground text-sm">{item.description}</p>
-                            </motion.div>
-                        ))}
                     </div>
+                </motion.div>
 
-                    {/* Quick Metrics */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: 0.4 }}
-                        className="mt-6 flex flex-wrap gap-4"
-                    >
-                        <div className="flex-1 bg-gradient-to-br from-primary/20 to-purple-500/20 border border-primary/20 rounded-xl p-4 flex items-center gap-4">
-                            <span className="text-3xl font-bold text-foreground">700+</span>
-                            <span className="text-sm font-medium text-muted-foreground leading-tight">LeetCode<br />Solved</span>
-                        </div>
-                        <div className="flex-1 bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/20 rounded-xl p-4 flex items-center gap-4">
-                            <span className="text-3xl font-bold text-foreground">4★</span>
-                            <span className="text-sm font-medium text-muted-foreground leading-tight">HackerRank<br />Problem Solving</span>
-                        </div>
-                    </motion.div>
-                </div>
+                {/* Text */}
+                <motion.div
+                    initial={{ opacity: 0, x: 30 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.1 }}
+                >
+                    <div className="space-y-5 text-on-surface-variant text-base leading-relaxed">
+                        <p>
+                            Hello! I'm <span className="text-white font-semibold">Shrikant Kumar</span>, a B.Tech Computer Science student
+                            with a deep passion for full-stack development and software architecture.
+                        </p>
+                        <p>
+                            My journey in tech is driven by the thrill of solving complex problems and
+                            building systems that handle data efficiently at scale. I thrive in environments
+                            where performance and reliability are critical.
+                        </p>
+                        <p>
+                            I specialize in the <span className="text-white font-semibold">MERN stack</span> and enjoy crafting scalable
+                            REST APIs, clean UI interfaces, and robust backend systems. I'm also comfortable
+                            with Docker and containerized deployments.
+                        </p>
+                        <p>
+                            Beyond coding, I constantly challenge myself with algorithmic problems —
+                            having solved <span className="text-primary font-semibold">700+ problems</span> on LeetCode and holding a
+                            4-star rating on HackerRank.
+                        </p>
+                    </div>
+                </motion.div>
+
             </div>
         </SectionWrapper>
     );

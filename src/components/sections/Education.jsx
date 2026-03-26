@@ -5,24 +5,30 @@ import SectionWrapper from '../layout/SectionWrapper';
 const Education = () => {
     const educationData = [
         {
-            degree: "Bachelor of Technology in Computer Science",
-            institution: "Your University Name", // Replace with actual
-            location: "Your City, State", // Replace with actual
-            period: "2022 - 2026 (Expected)",
+            degree: "B.Tech in Computer Science",
+            institution: "Lovely Professional University", // Replace with actual
+            location: "Phagwara, Punjab", // Replace with actual
+            period: "2023 - Present",
             details: [
-                "Pre-final year student with a focus on Backend Systems and Data Structures.",
-                "Relevant Coursework: Data Structures & Algorithms, Operating Systems, Database Management Systems, Computer Networks.",
-                "Current CGPA: 8.5/10 (Adjust as needed)"
+                "Current CGPA: 8.90"
             ]
         },
         {
-            degree: "Higher Secondary (12th Grade)",
-            institution: "Your College/School Name", // Replace with actual
-            location: "Your City, State", // Replace with actual
+            degree: "Intermediate",
+            institution: "A.N College", // Replace with actual
+            location: "Patna, Bihar", // Replace with actual
             period: "2020 - 2022",
             details: [
-                "Completed with a focus on Physics, Chemistry, and Mathematics (PCM).",
-                "Percentage/Grade: 90% (Adjust as needed)"
+                "Percentage: 82.4"
+            ]
+        },
+        {
+            degree: "Matriculation (10th Grade)",
+            institution: "Christ Church Diocesan School", // Replace with actual
+            location: "Patna, Bihar", // Replace with actual
+            period: "2020",
+            details: [
+                "Percentage: 87.6"
             ]
         }
     ];
@@ -30,17 +36,21 @@ const Education = () => {
     return (
         <SectionWrapper id="education">
             <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: -20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
+                className="mb-12 border-l-4 border-primary pl-6"
             >
-                <h2 className="text-3xl md:text-4xl font-bold mb-12 flex items-center justify-center gap-2">
-                    <GraduationCap className="w-8 h-8 text-primary" /> Education
+                <h2 className="font-headline text-4xl md:text-5xl font-black tracking-tighter uppercase mb-2">
+                    Academic <span className="text-primary">Background</span>
                 </h2>
+                <p className="text-on-surface-variant text-sm font-mono tracking-widest uppercase">
+                    // educational_history_repository
+                </p>
             </motion.div>
 
-            <div className="max-w-4xl mx-auto">
+            <div>
                 <div className="relative border-l-2 border-primary/30 ml-4 md:ml-6 space-y-12">
                     {educationData.map((item, index) => (
                         <motion.div
