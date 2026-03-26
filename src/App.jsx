@@ -1,6 +1,7 @@
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import SectionWrapper from './components/layout/SectionWrapper';
+import InteractiveBackground from './components/layout/InteractiveBackground';
 import Hero from './components/sections/Hero';
 import About from './components/sections/About';
 import Skills from './components/sections/Skills';
@@ -12,28 +13,25 @@ import Contact from './components/sections/Contact';
 
 function App() {
   return (
-    <div className="font-sans bg-background text-foreground min-h-screen">
-      <Navbar />
+    <div className="font-sans text-foreground min-h-screen relative overflow-x-hidden">
+      <InteractiveBackground />
+      
+      <div className="relative z-10">
+        <Navbar />
 
-      <main>
-        <Hero />
+        <main>
+          <Hero />
+          <About />
+          <Skills />
+          <Projects />
+          <Education />
+          <CodingStats />
+          <Certifications />
+          <Contact />
+        </main>
 
-        <About />
-
-        <Skills />
-
-        <Projects />
-
-        <Education />
-
-        <CodingStats />
-
-        <Certifications />
-
-        <Contact />
-      </main>
-
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 }
