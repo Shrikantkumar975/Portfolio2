@@ -45,7 +45,7 @@ const Navbar = () => {
                     onClick={() => setIsResumeOpen(true)}
                     className="inline-block px-4 py-1 border-2 border-primary text-primary hover:bg-primary hover:text-on-primary transition-all cursor-pointer font-bold"
                 >
-                    VIEW_PDF
+                    VIEW_RESUME
                 </button>
             </div>
 
@@ -85,7 +85,7 @@ const Navbar = () => {
                                 }}
                                 className="block w-full text-center px-4 py-2 border-2 border-primary text-primary hover:bg-primary hover:text-on-primary transition-all cursor-pointer font-bold"
                             >
-                                VIEW_PDF
+                                VIEW_RESUME
                             </button>
                         </div>
                     </div>

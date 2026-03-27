@@ -56,23 +56,15 @@ const About = () => {
                 >
                     <div className="space-y-5 text-on-surface-variant text-base leading-relaxed">
                         <p>
-                            Hello! I'm <span className="text-white font-semibold">Shrikant Kumar</span>, a B.Tech Computer Science student
-                            with a deep passion for full-stack development and software architecture.
+                            I am a <b>Computer Science Engineering student</b> dedicated to building high-performance systems and solving complex algorithmic challenges. My development journey is fueled by a merge of technical curiosity and a goal to create digital solutions that work seamlessly.
                         </p>
+
                         <p>
-                            My journey in tech is driven by the thrill of solving complex problems and
-                            building systems that handle data efficiently at scale. I thrive in environments
-                            where performance and reliability are critical.
+                            With over <b>700+ problems solved on LeetCode</b>, and <b>1600+ rating</b>  on LeetCode, I’ve built a solid foundation in data structures and algorithms. This analytical background allows me to write optimized code and tackle complex bugs with a structured, problem-solving mindset.
                         </p>
+
                         <p>
-                            I specialize in the <span className="text-white font-semibold">MERN stack</span> and enjoy crafting scalable
-                            REST APIs, clean UI interfaces, and robust backend systems. I'm also comfortable
-                            with Docker and containerized deployments.
-                        </p>
-                        <p>
-                            Beyond coding, I constantly challenge myself with algorithmic problems —
-                            having solved <span className="text-primary font-semibold">700+ problems</span> on LeetCode and holding a
-                            4-star rating on HackerRank.
+                            Currently, I focus on the <b>MERN stack</b>, Java, and SQL to bridge the gap between robust backend systems and intuitive frontend experiences. My objective is simple: to deliver clean, purposeful, and scalable code that solves real-world problems.
                         </p>
                     </div>
                 </motion.div>

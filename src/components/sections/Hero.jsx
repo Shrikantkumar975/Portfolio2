@@ -7,25 +7,25 @@ const Hero = () => {
     const [terminalStep, setTerminalStep] = useState(0);
 
     useEffect(() => {
-        const timer1 = setTimeout(() => setTerminalStep(1), 500);
-        const timer2 = setTimeout(() => setTerminalStep(2), 1200);
-        const timer3 = setTimeout(() => setTerminalStep(3), 1400);
-        const timer4 = setTimeout(() => setTerminalStep(4), 1600);
-        const timer5 = setTimeout(() => setTerminalStep(5), 1800);
-        const timer6 = setTimeout(() => setTerminalStep(6), 2000);
-        const timer7 = setTimeout(() => setTerminalStep(7), 2400);
+        const timers = [
+            setTimeout(() => setTerminalStep(1), 500),
+            setTimeout(() => setTerminalStep(2), 1100),
+            setTimeout(() => setTerminalStep(3), 1300),
+            setTimeout(() => setTerminalStep(4), 1500),
+            setTimeout(() => setTerminalStep(5), 1700),
+            setTimeout(() => setTerminalStep(6), 1900),
+            setTimeout(() => setTerminalStep(7), 2100),
+            setTimeout(() => setTerminalStep(8), 2600)
+        ];
 
-        return () => {
-            clearTimeout(timer1); clearTimeout(timer2); clearTimeout(timer3);
-            clearTimeout(timer4); clearTimeout(timer5); clearTimeout(timer6); clearTimeout(timer7);
-        };
+        return () => timers.forEach(t => clearTimeout(t));
     }, []);
 
     return (
         <SectionWrapper id="home" className="pt-24 md:pt-32 pb-12">
             <section className="py-12 md:py-20 grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10 w-full">
                 <div className="lg:col-span-7 flex flex-col justify-center">
-                    <div className="mb-4 inline-block px-3 py-1 bg-surface-container-highest border border-outline text-primary font-label text-xs tracking-[0.2em] w-max">
+                    <div className="mb-4 inline-block px-3 py-1 bg-surface-container-highest border border-primary/30 text-primary font-label text-[10px] tracking-[0.2em] w-max animate-pulse">
                         [STATUS: OPEN_TO_WORK]
                     </div>
                     
@@ -34,9 +34,11 @@ const Hero = () => {
                         <span className="text-primary terminal-glow">KUMAR</span>
                     </h1>
                     
-                    <p className="font-headline text-xl md:text-3xl text-on-surface-variant uppercase tracking-tight mb-8 max-w-xl">
-                        FULL-STACK DEVELOPER <br></br> 
-                        <small>CRAFTING HIGH-PERFORMANCE WEB APPLICATIONS.</small>
+                    <p className="font-headline text-xl md:text-2xl text-on-surface-variant uppercase tracking-tight mb-8 max-w-xl">
+                        FULL-STACK DEVELOPER <br />
+                        <span className="text-secondary font-mono text-xs md:text-sm tracking-widest mt-1 block px-2 border-l-2 border-secondary/40 bg-secondary/5 italic opacity-80">
+                            // OPTIMIZING_FOR_SPEED_AND_SCALABILITY
+                        </span>
                     </p>
                     
                     <div className="flex flex-wrap gap-4">
@@ -148,9 +150,17 @@ const Hero = () => {
                                         <span className="text-xs text-outline pl-2">VERSION_CONTROL</span>
                                     </div>
                                 )}
+                                {terminalStep >= 7 && (
+                                    <div className="flex items-center gap-3 group mt-1">
+                                        <span className="text-primary">[OK]</span>
+                                        <span className="text-on-surface font-bold">ALGO & DSA</span>
+                                        <div className="h-[2px] flex-grow bg-outline-variant opacity-20"></div>
+                                        <span className="text-xs text-outline pl-2">SOLUTIONS</span>
+                                    </div>
+                                )}
                             </div>
                             
-                            {terminalStep >= 7 && (
+                            {terminalStep >= 8 && (
                                 <div className="mt-6 flex gap-4">
                                     <span className="text-secondary">$</span>
                                     <span className="text-on-surface animate-pulse">_</span>

@@ -55,7 +55,7 @@ const ResumeModal = ({ isOpen, onClose }) => {
                                     className="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary font-label font-bold text-xs border-2 border-on-primary-fixed hover:bg-primary-container hover:text-black transition-all cursor-pointer"
                                 >
                                     <Download size={16} />
-                                    <span className="hidden sm:inline">DOWNLOAD_CV</span>
+                                    <span className="hidden sm:inline">DOWNLOAD_RESUME</span>
                                 </a>
                                 <button
                                     onClick={onClose}
